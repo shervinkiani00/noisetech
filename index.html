@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOISE TECH | رسانه تکنولوژی، پادکست، مجله و ویدیو</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
+                    colors: {
+                        noise: { 500: '#06b6d4', 600: '#0891b2', 900: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+        .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-28 selection:bg-cyan-500 selection:text-black">
+
+    <!-- نوار وضعیت امنیتی و ابری بالا -->
+    <div class="bg-slate-900/90 border-b border-slate-800 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1.5 text-emerald-400 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    متصل به فضای ابری Noise Tech
+                </span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-400">دامنه رسمی: <strong class="text-cyan-400">noisetech.ir</strong></span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-slate-400">کاربر فعال (شبیه‌ساز دسترسی):</span>
+                <select id="activeUserSelect" onchange="switchUser(this.value)" class="bg-slate-800 border border-slate-700 text-cyan-300 rounded px-2 py-1 text-xs focus:outline-none">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- هدر اصلی -->
+    <header class="sticky top-0 z-40 glass border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg shadow-cyan-500/20">
+                    NT
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wider text-white">NOISE <span class="text-cyan-400">TECH</span></h1>
+                    <p class="text-[11px] text-slate-400">پادکست • مجله • مقاله • ویدیو</p>
+                </div>
+            </div>
+
+            <!-- جستجو -->
+            <div class="flex-1 max-w-md mx-4">
+                <input id="searchInput" oninput="renderContent()" type="text" placeholder="جستجو در پادکست‌ها، مقالات، ویدیوها..." 
+                    class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500">
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openAdminModal()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+                    <span>⚙️ پنل مدیریت و امنیت</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- بخش قهرمان (Hero) -->
+    <section class="max-w-7xl mx-auto px-4 pt-8 pb-6">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/60 border border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-4 max-w-2xl">
+                <span class="inline-block bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold px-3 py-1 rounded-full">
+                    نسخه ابری Noise Tech
+                </span>
+                <h2 class="text-2xl md:text-4xl font-black leading-tight text-white">
+                    مرکز رسانه، پادکست و بررسی‌های عمیق دنیای تکنولوژی
+                </h2>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                    جدیدترین اپیزودهای پادکست، شماره‌های مجله دیجیتال، مقالات تخصصی و ویدیوهای بررسی سخت‌افزار و هوش مصنوعی را در نویز تک دنبال کنید.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-3 w-full md:w-auto text-center">
+                <div class="bg-slate-950/70 border border-slate-800 p-4 rounded-2xl min-w-[120px]">
+                    <div id="statTotal" class="text-2xl font-black text-cyan-400">0</div>
+                    <div class="text-xs text-slate-400 mt-1">کل محتواها</div>
+                </div>
+                <div class="bg-slate-950/70 border border-slate-800 p-4 rounded-2xl min-w-[120px]">
+                    <div id="statTeam" class="text-2xl font-black text-emerald-400">0</div>
+                    <div class="text-xs text-slate-400 mt-1">اعضای فعال تیم</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تب‌های دسته‌بندی -->
+    <section class="max-w-7xl mx-auto px-4 mb-6">
+        <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4" id="categoryTabs">
+            <button onclick="setFilter('all')" data-cat="all" class="cat-btn bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm">همه مطالب</button>
+            <button onclick="setFilter('podcast')" data-cat="podcast" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm">🎧 پادکست‌ها</button>
+            <button onclick="setFilter('article')" data-cat="article" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm">📝 مقالات</button>
+            <button onclick="setFilter('magazine')" data-cat="magazine" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm">📖 مجله</button>
+            <button onclick="setFilter('video')" data-cat="video" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm">🎬 ویدیوها</button>
+        </div>
+    </section>
+
+    <!-- شبکه نمایش محتوا -->
+    <main class="max-w-7xl mx-auto px-4">
+        <div id="contentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <!-- مودال مطالعه و تماشای محتوا -->
+    <div id="viewModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-4">
+                <span id="viewBadge" class="text-xs px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300"></span>
+                <button onclick="closeViewModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
+            </div>
+            <h3 id="viewTitle" class="text-2xl font-bold text-white mb-2"></h3>
+            <p id="viewMeta" class="text-xs text-slate-400 mb-6"></p>
+            <div id="viewBody" class="text-slate-300 leading-8 text-sm whitespace-pre-line"></div>
+        </div>
+    </div>
+
+    <!-- مودال پنل مدیریت و امنیت (CMS + RBAC) -->
+    <div id="adminModal" class="fixed inset-0 bg-black/85 z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-black text-white">پنل مدیریت، امنیت و فضای ابری Noise Tech</h3>
+                    <p id="currentRoleBanner" class="text-xs text-cyan-400 mt-1"></p>
+                </div>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
+            </div>
+
+            <!-- تب‌های پنل مدیریت -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-3">
+                <button onclick="switchAdminTab('content')" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">۱. مدیریت محتوا</button>
+                <button onclick="switchAdminTab('team')" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">۲. مدیریت تیم و دسترسی‌ها</button>
+                <button onclick="switchAdminTab('logs')" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">۳. لاگ امنیتی (Audit Log)</button>
+                <button onclick="switchAdminTab('backup')" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">۴. پشتیبان‌گیری ابری (JSON)</button>
+            </div>
+
+            <!-- تب ۱: افزودن محتوا -->
+            <div id="adminTab-content" class="space-y-6">
+                <form onsubmit="saveContent(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <input type="hidden" id="editId">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">عنوان مطلب</label>
+                        <input id="formTitle" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">دسته‌بندی</label>
+                        <select id="formType" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                            <option value="podcast">🎧 پادکست</option>
+                            <option value="article">📝 مقاله</option>
+                            <option value="magazine">📖 مجله</option>
+                            <option value="video">🎬 ویدیو</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-slate-400 block mb-1">لینک فایل صوتی / ویدیو یا تصویر (اختیاری)</label>
+                        <input id="formMediaUrl" placeholder="https://..." class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs text-slate-400 block mb-1">متن کامل / توضیحات اپیزود</label>
+                        <textarea id="formBody" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex justify-end gap-2">
+                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-5 py-2 rounded-lg text-sm">ذخیره و انتشار در ابر</button>
+                    </div>
+                </form>
+
+                <div id="adminContentList" class="space-y-2"></div>
+            </div>
+
+            <!-- تب ۲: مدیریت دسترسی تیم -->
+            <div id="adminTab-team" class="hidden space-y-6">
+                <form onsubmit="addTeamMember(event)" class="flex flex-wrap gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <input id="memberName" required placeholder="نام همکار جدید..." class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                    <select id="memberRole" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                        <option value="editor">🛡️ سردبیر (افزودن و حذف مطلب)</option>
+                        <option value="author">✍️ نویسنده (فقط افزودن مطلب)</option>
+                    </select>
+                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm">افزودن عضو</button>
+                </form>
+                <div id="teamList" class="space-y-2"></div>
+            </div>
+
+            <!-- تب ۳: لاگ امنیتی -->
+            <div id="adminTab-logs" class="hidden">
+                <div id="securityLogs" class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2 text-xs font-mono max-h-72 overflow-y-auto"></div>
+            </div>
+
+            <!-- تب ۴: بکاپ -->
+            <div id="adminTab-backup" class="hidden space-y-4">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h4 class="font-bold text-white text-sm">دانلود فایل پشتیبان (JSON Backup)</h4>
+                        <p class="text-xs text-slate-400 mt-1">تمام مطالب، کاربران و تنظیمات سایت را در یک فایل ذخیره کنید.</p>
+                    </div>
+                    <button onclick="exportBackup()" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs">دانلود بکاپ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- پلیر پادکست پایین صفحه -->
+    <div class="fixed bottom-0 inset-x-0 glass border-t border-slate-800 p-3 z-40">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">🎧</div>
+                <div>
+                    <div id="playerTitle" class="text-sm font-bold text-white">اپیزود ۱: آینده هوش مصنوعی و تراشه‌های کوانتومی</div>
+                    <div class="text-xs text-slate-400">پخش‌کننده صوتی Noise Tech</div>
+                </div>
+            </div>
+            <audio id="audioElement" controls class="h-9 w-full md:w-96" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        </div>
+    </div>
+
+    <script>
+        // تابع امنیتی ضد XSS
+        function sanitizeHTML(str) {
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // داده‌های پیش‌فرض
+        const defaultData = {
+            users: [
+                { id: 'u1', name: 'مدیر کل (شما)', role: 'superadmin', active: true },
+                { id: 'u2', name: 'سارا (سردبیر)', role: 'editor', active: true },
+                { id: 'u3', name: 'امیر (نویسنده)', role: 'author', active: true }
+            ],
+            posts: [
+                {
+                    id: 'p1',
+                    title: 'اپیزود ۱: انقلاب تراشه‌های عصبی و هوش مصنوعی مولد',
+                    type: 'podcast',
+                    author: 'مدیر کل (شما)',
+                    date: '۱۴۰۵/۰۸/۰۷',
+                    mediaUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                    body: 'در اولین اپیزود پادکست نویز تک، معماری پردازنده‌های جدید هوش مصنوعی و تاثیر آن بر آینده برنامه‌نویسی را بررسی می‌کنیم.'
+                },
+                {
+                    id: 'p2',
+                    title: 'بررسی عمیق معماری وب ابری و امنیت سایبری مدرن',
+                    type: 'article',
+                    author: 'سارا (سردبیر)',
+                    date: '۱۴۰۵/۰۸/۰۷',
+                    mediaUrl: '',
+                    body: 'امنیت در برنامه‌های وب مدرن نیازمند کنترل دسترسی مبتنی بر نقش (RBAC)، پاکسازی ورودی‌ها در برابر حملات XSS و استفاده از گواهی SSL است.'
+                },
+                {
+                    id: 'p3',
+                    title: 'شماره اول ماهنامه دیجیتال Noise Tech - ویژه آینده پژوهی',
+                    type: 'magazine',
+                    author: 'مدیر کل (شما)',
+                    date: '۱۴۰۵/۰۸/۰۷',
+                    mediaUrl: '',
+                    body: 'در این شماره از مجله نویز تک، پرونده ویژه کامپیوترهای کوانتومی، گجت‌های پوشیدنی و مصاحبه با مهندسان نرم‌افزار را می‌خوانید.'
+                },
+                {
+                    id: 'p4',
+                    title: 'ویدیو: کالبدشکافی و بررسی لپ‌تاپ‌های مجهز به NPU',
+                    type: 'video',
+                    author: 'امیر (نویسنده)',
+                    date: '۱۴۰۵/۰۸/۰۷',
+                    mediaUrl: '',
+                    body: 'در این ویدیو عملکرد واقعی پردازشگرهای عصبی را در اجرای مدل‌های زبانی محلی آزمایش کردیم.'
+                }
+            ],
+            logs: [
+                'سیستم امنیتی Noise Tech فعال شد.'
+            ]
+        };
+
+        let state = JSON.parse(localStorage.getItem('noisetech_db')) || defaultData;
+        let currentFilter = 'all';
+        let currentUserId = state.users[0].id;
+
+        function saveState() {
+            localStorage.setItem('noisetech_db', JSON.stringify(state));
+            renderAll();
+        }
+
+        function logAction(msg) {
+            const time = new Date().toLocaleTimeString('fa-IR');
+            state.logs.unshift(`[${time}] ${msg}`);
+            saveState();
+        }
+
+        function getCurrentUser() {
+            return state.users.find(u => u.id === currentUserId) || state.users[0];
+        }
+
+        function switchUser(id) {
+            currentUserId = id;
+            const u = getCurrentUser();
+            logAction(`تغییر کاربر فعال به: ${u.name}`);
+            renderAll();
+        }
+
+        function setFilter(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-btn bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm';
+                } else {
+                    btn.className = 'cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm';
+                }
+            });
+            renderContent();
+        }
+
+        function typeBadge(type) {
+            const map = {
+                podcast: '🎧 پادکست',
+                article: '📝 مقاله',
+                magazine: '📖 مجله',
+                video: '🎬 ویدیو'
+            };
+            return map[type] || type;
+        }
+
+        function renderContent() {
+            const q = document.getElementById('searchInput').value.trim().toLowerCase();
+            const grid = document.getElementById('contentGrid');
+            const filtered = state.posts.filter(p => {
+                const matchCat = currentFilter === 'all' || p.type === currentFilter;
+                const matchQ = p.title.toLowerCase().includes(q) || p.body.toLowerCase().includes(q);
+                return matchCat && matchQ;
+            });
+
+            grid.innerHTML = filtered.map(p => `
+                <article class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 flex flex-col justify-between transition group">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-800 text-cyan-400">${typeBadge(p.type)}</span>
+                            <span class="text-[11px] text-slate-500">${p.date}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition mb-2">${p.title}</h3>
+                        <p class="text-slate-400 text-sm line-clamp-3 leading-relaxed">${p.body}</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                        <span class="text-xs text-slate-500">نویسنده: ${p.author}</span>
+                        ${p.type === 'podcast' 
+                            ? `<button onclick="playPodcast('${p.id}')" class="bg-cyan-500/15 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold px-3 py-1.5 rounded-lg transition">▶ پخش اپیزود</button>`
+                            : `<button onclick="openViewModal('${p.id}')" class="bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">مشاهده کامل</button>`
+                        }
+                    </div>
+                </article>
+            `).join('');
+
+            document.getElementById('statTotal').textContent = state.posts.length;
+            document.getElementById('statTeam').textContent = state.users.filter(u => u.active).length;
+        }
+
+        function playPodcast(id) {
+            const p = state.posts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('playerTitle').textContent = p.title;
+            const audio = document.getElementById('audioElement');
+            if (p.mediaUrl) audio.src = p.mediaUrl;
+            audio.play();
+        }
+
+        function openViewModal(id) {
+            const p = state.posts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('viewBadge').textContent = typeBadge(p.type);
+            document.getElementById('viewTitle').textContent = p.title;
+            document.getElementById('viewMeta').textContent = `نویسنده: ${p.author} | تاریخ: ${p.date}`;
+            document.getElementById('viewBody').textContent = p.body;
+            document.getElementById('viewModal').classList.remove('hidden');
+            document.getElementById('viewModal').classList.add('flex');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.add('hidden');
+            document.getElementById('viewModal').classList.remove('flex');
+        }
+
+        function openAdminModal() {
+            renderAdmin();
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('adminModal').classList.add('flex');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminModal').classList.remove('flex');
+        }
+
+        function switchAdminTab(tab) {
+            ['content', 'team', 'logs', 'backup'].forEach(t => {
+                document.getElementById(`adminTab-${t}`).classList.toggle('hidden', t !== tab);
+            });
+        }
+
+        function saveContent(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (!user.active) {
+                logAction(`⛔ تلاش ناموفق ارسال مطلب توسط کاربر مسدود شده: ${user.name}`);
+                alert('دسترسی شما توسط مدیر کل قطع شده است!');
+                return;
+            }
+
+            const editId = document.getElementById('editId').value;
+            const title = sanitizeHTML(document.getElementById('formTitle').value);
+            const type = document.getElementById('formType').value;
+            const mediaUrl = sanitizeHTML(document.getElementById('formMediaUrl').value);
+            const body = sanitizeHTML(document.getElementById('formBody').value);
+
+            if (editId) {
+                const item = state.posts.find(p => p.id === editId);
+                if (item) {
+                    item.title = title;
+                    item.type = type;
+                    item.mediaUrl = mediaUrl;
+                    item.body = body;
+                    logAction(`✏️ ویرایش مطلب «${title}» توسط ${user.name}`);
+                }
+            } else {
+                state.posts.unshift({
+                    id: 'p_' + Date.now(),
+                    title,
+                    type,
+                    mediaUrl,
+                    body,
+                    author: user.name,
+                    date: new Date().toLocaleDateString('fa-IR')
+                });
+                logAction(`✅ انتشار مطلب جدید «${title}» توسط ${user.name}`);
+            }
+
+            document.getElementById('editId').value = '';
+            e.target.reset();
+            saveState();
+        }
+
+        function editPost(id) {
+            const p = state.posts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('editId').value = p.id;
+            document.getElementById('formTitle').value = p.title;
+            document.getElementById('formType').value = p.type;
+            document.getElementById('formMediaUrl').value = p.mediaUrl || '';
+            document.getElementById('formBody').value = p.body;
+        }
+
+        function deletePost(id) {
+            const user = getCurrentUser();
+            if (!user.active || user.role === 'author') {
+                logAction(`⛔ تلاش غیرمجاز برای حذف مطلب توسط ${user.name}`);
+                alert('خطای امنیتی: فقط مدیر کل و سردبیر اجازه حذف مطالب را دارند!');
+                return;
+            }
+            state.posts = state.posts.filter(p => p.id !== id);
+            logAction(`🗑️ حذف یک مطلب توسط ${user.name}`);
+            saveState();
+        }
+
+        function addTeamMember(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (user.role !== 'superadmin' || !user.active) {
+                alert('فقط مدیر کل اجازه افزودن یا تغییر دسترسی اعضای تیم را دارد!');
+                return;
+            }
+            const name = sanitizeHTML(document.getElementById('memberName').value);
+            const role = document.getElementById('memberRole').value;
+            state.users.push({ id: 'u_' + Date.now(), name, role, active: true });
+            logAction(`👤 عضو جدید «${name}» با نقش ${role} توسط مدیر کل اضافه شد.`);
+            e.target.reset();
+            saveState();
+        }
+
+        function toggleUserAccess(id) {
+            const user = getCurrentUser();
+            if (user.role !== 'superadmin' || !user.active) {
+                alert('فقط مدیر کل اجازه قطع یا وصل دسترسی اعضا را دارد!');
+                return;
+            }
+            const target = state.users.find(u => u.id === id);
+            if (!target || target.role === 'superadmin') return;
+            target.active = !target.active;
+            logAction(`🔒 وضعیت دسترسی «${target.name}» به «${target.active ? 'فعال' : 'مسدود'}» تغییر یافت.`);
+            saveState();
+        }
+
+        function exportBackup() {
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'noisetech-backup.json';
+            a.click();
+        }
+
+        function renderAdmin() {
+            const user = getCurrentUser();
+            document.getElementById('currentRoleBanner').textContent = 
+                `کاربر فعلی: ${user.name} | نقش: ${user.role} | وضعیت: ${user.active ? 'مجاز و فعال' : 'مسدود شده'}`;
+
+            document.getElementById('adminContentList').innerHTML = state.posts.map(p => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs text-cyan-400 font-bold ml-2">${typeBadge(p.type)}</span>
+                        <span class="text-sm text-white font-medium">${p.title}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editPost('${p.id}')" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded text-xs">ویرایش</button>
+                        <button onclick="deletePost('${p.id}')" class="bg-rose-500/20 text-rose-300 px-3 py-1 rounded text-xs">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('teamList').innerHTML = state.users.map(u => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
+                    <div>
+                        <span class="text-sm font-bold text-white">${u.name}</span>
+                        <span class="text-xs text-slate-400 mr-2">(${u.role})</span>
+                        <span class="text-xs px-2 py-0.5 rounded mr-2 ${u.active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">
+                            ${u.active ? 'دسترسی فعال' : 'مسدود شده'}
+                        </span>
+                    </div>
+                    ${u.role !== 'superadmin' ? `
+                        <button onclick="toggleUserAccess('${u.id}')" class="px-3 py-1 rounded text-xs font-bold ${u.active ? 'bg-rose-500 text-white' : 'bg-emerald-500 text-slate-950'}">
+                            ${u.active ? 'قطع دسترسی' : 'وصل مجدد دسترسی'}
+                        </button>
+                    ` : `<span class="text-xs text-cyan-400 font-bold">👑 مدیر اصلی</span>`}
+                </div>
+            `).join('');
+
+            document.getElementById('securityLogs').innerHTML = state.logs.map(l => `<div>${l}</div>`).join('');
+        }
+
+        function renderAll() {
+            const sel = document.getElementById('activeUserSelect');
+            sel.innerHTML = state.users.map(u => `
+                <option value="${u.id}" ${u.id === currentUserId ? 'selected' : ''}>
+                    ${u.name} (${u.active ? 'فعال' : '⛔ مسدود'})
+                </option>
+            `).join('');
+            renderContent();
+            renderAdmin();
+        }
+
+        renderAll();
+    </script>
+</body>
+</html>

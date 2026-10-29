@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="fa" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -27,6 +27,17 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen pb-32 selection:bg-cyan-500 selection:text-black flex flex-col justify-between">
 
     <div>
+        <!-- نوار وضعیت اتصال زنده ابری -->
+        <div class="bg-slate-900/90 border-b border-slate-800/80 text-[11px] py-1.5 px-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span id="cloudDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span id="cloudStatusText" class="text-slate-400">در حال اتصال به سرور ابری Noise Tech...</span>
+                </div>
+                <span class="text-slate-500">noisetech.ir</span>
+            </div>
+        </div>
+
         <!-- هدر اصلی -->
         <header class="sticky top-0 z-40 glass border-b border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
@@ -36,7 +47,7 @@
                     </div>
                     <div>
                         <h1 class="text-xl font-black tracking-wider text-white">NOISE <span class="text-cyan-400">TECH</span></h1>
-                        <p class="text-[11px] text-slate-400">رسانه نسل جدید تکنولوژی • noisetech.ir</p>
+                        <p class="text-[11px] text-slate-400">پادکست • مجله • مقاله • ویدیو</p>
                     </div>
                 </a>
 
@@ -47,8 +58,7 @@
                 </div>
 
                 <!-- دکمه ورود مدیریت / وضعیت مدیر -->
-                <div class="flex items-center gap-2" id="headerAuthArea">
-                </div>
+                <div class="flex items-center gap-2" id="headerAuthArea"></div>
             </div>
         </header>
 
@@ -170,7 +180,7 @@
         <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
                 <div>
-                    <h3 class="text-xl font-black text-white">پنل مدیریت و امنیت Noise Tech</h3>
+                    <h3 class="text-xl font-black text-white">پنل مدیریت ابری و امنیت Noise Tech</h3>
                     <p id="currentRoleBanner" class="text-xs text-cyan-400 mt-1"></p>
                 </div>
                 <div class="flex items-center gap-3">
@@ -205,8 +215,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1">لینک عکس کاور (پوستر مطلب)</label>
-                        <input id="formCoverUrl" dir="ltr" placeholder="https://images.unsplash.com/..." class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
+                        <label class="text-xs text-slate-400 block mb-1">لینک عکس کاور (اختیاری - در صورت خالی بودن عکس پیش‌فرض قرار می‌گیرد)</label>
+                        <input id="formCoverUrl" dir="ltr" placeholder="https://..." class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1">لینک فایل صوتی MP3 یا ویدیو MP4 (اختیاری)</label>
@@ -217,7 +227,7 @@
                         <textarea id="formBody" rows="4" required class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white"></textarea>
                     </div>
                     <div class="md:col-span-2 flex justify-end gap-2">
-                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm">ذخیره و انتشار در سایت</button>
+                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-2 rounded-lg text-sm">ذخیره و انتشار آنی در ابر</button>
                     </div>
                 </form>
 
@@ -226,16 +236,14 @@
 
             <!-- تب ۲: مدیریت دسترسی تیم و رمز عبور -->
             <div id="adminTab-team" class="hidden space-y-6">
-                <!-- تغییر رمز عبور مدیر کل -->
                 <form onsubmit="changeMyPassword(event)" class="bg-slate-950 p-4 rounded-xl border border-cyan-500/30 flex flex-wrap items-end gap-3">
                     <div class="flex-1 min-w-[200px]">
                         <label class="text-xs text-cyan-400 font-bold block mb-1">🔑 تغییر رمز عبور حساب فعلی شما</label>
                         <input id="newAdminPass" type="password" required dir="ltr" placeholder="رمز عبور جدید را وارد کنید..." class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
                     </div>
-                    <button type="submit" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm">به‌روزرسانی رمز من</button>
+                    <button type="submit" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm">ذخیره رمز جدید در ابر</button>
                 </form>
 
-                <!-- افزودن نویسنده یا سردبیر جدید -->
                 <form onsubmit="addTeamMember(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800">
                     <input id="memberName" required placeholder="نام همکار (مثلا: علی)" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
                     <input id="memberUsername" required dir="ltr" placeholder="Username (e.g. ali)" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white">
@@ -283,15 +291,32 @@
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">🎧</div>
                 <div>
-                    <div id="playerTitle" class="text-sm font-bold text-white">اپیزود ۱: انقلاب تراشه‌های عصبی و هوش مصنوعی مولد</div>
-                    <div class="text-xs text-slate-400">پخش‌کننده صوتی Noise Tech</div>
+                    <div id="playerTitle" class="text-sm font-bold text-white">پخش‌کننده صوتی Noise Tech آماده پخش است</div>
+                    <div class="text-xs text-slate-400">روی دکمه پخش هر پادکست کلیک کنید</div>
                 </div>
             </div>
-            <audio id="audioElement" controls class="h-9 w-full md:w-96" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+            <audio id="audioElement" controls class="h-9 w-full md:w-96"></audio>
         </div>
     </div>
 
-    <script>
+    <!-- اتصال مستقیم به دیتابیس ابری Firebase شما -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuCBPSZV8yhzPhAYEDalIHfyiBfkDjXcc",
+            authDomain: "noisetech-6e19c.firebaseapp.com",
+            projectId: "noisetech-6e19c",
+            storageBucket: "noisetech-6e19c.firebasestorage.app",
+            messagingSenderId: "271173683705",
+            appId: "1:271173683705:web:68c3d21cb7b7643953d528"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const stateDocRef = doc(db, "noisetech_cloud", "main_state");
+
         function sanitizeHTML(str) {
             if (!str) return '';
             const temp = document.createElement('div');
@@ -306,82 +331,71 @@
             video: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80'
         };
 
-        const defaultData = {
+        // دیتابیس اولیه کاملاً تمیز (بدون هیچ مطلب ساختگی)
+        const initialEmptyState = {
             users: [
-                { id: 'u1', name: 'مدیر کل (شما)', username: 'admin', password: 'noise2026', role: 'superadmin', active: true },
-                { id: 'u2', name: 'سارا (سردبیر)', username: 'sara', password: '123456', role: 'editor', active: true },
-                { id: 'u3', name: 'امیر (نویسنده)', username: 'amir', password: '123456', role: 'author', active: true }
+                { id: 'u1', name: 'مدیر کل', username: 'admin', password: 'noise2026', role: 'superadmin', active: true }
             ],
-            posts: [
-                {
-                    id: 'p1',
-                    title: 'اپیزود ۱: انقلاب تراشه‌های عصبی و هوش مصنوعی مولد',
-                    type: 'podcast',
-                    author: 'مدیر کل',
-                    date: '۱۴۰۵/۰۸/۰۷',
-                    likes: 24,
-                    coverUrl: defaultCovers.podcast,
-                    mediaUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-                    body: 'در اولین اپیزود پادکست نویز تک، معماری پردازنده‌های جدید هوش مصنوعی و تاثیر آن بر آینده برنامه‌نویسی و گجت‌های شخصی را بررسی می‌کنیم.',
-                    comments: [{ name: 'کیوان', text: 'فوق‌العاده بود، منتظر اپیزود بعدی هستیم!' }]
-                },
-                {
-                    id: 'p2',
-                    title: 'بررسی عمیق معماری وب ابری و امنیت سایبری مدرن',
-                    type: 'article',
-                    author: 'سارا (سردبیر)',
-                    date: '۱۴۰۵/۰۸/۰۷',
-                    likes: 19,
-                    coverUrl: defaultCovers.article,
-                    mediaUrl: '',
-                    body: 'امنیت در برنامه‌های وب مدرن نیازمند کنترل دسترسی مبتنی بر نقش (RBAC)، پاکسازی ورودی‌ها در برابر حملات XSS و استفاده از گواهی SSL است.',
-                    comments: []
-                },
-                {
-                    id: 'p3',
-                    title: 'شماره اول ماهنامه دیجیتال Noise Tech - ویژه آینده‌پژوهی',
-                    type: 'magazine',
-                    author: 'تحریریه نویز تک',
-                    date: '۱۴۰۵/۰۸/۰۷',
-                    likes: 31,
-                    coverUrl: defaultCovers.magazine,
-                    mediaUrl: '',
-                    body: 'در این شماره از مجله نویز تک، پرونده ویژه کامپیوترهای کوانتومی، گجت‌های پوشیدنی و مصاحبه با مهندسان ارشد نرم‌افزار را می‌خوانید.',
-                    comments: []
-                },
-                {
-                    id: 'p4',
-                    title: 'ویدیو: کالبدشکافی و تست لپ‌تاپ‌های مجهز به پردازشگر عصبی NPU',
-                    type: 'video',
-                    author: 'امیر (نویسنده)',
-                    date: '۱۴۰۵/۰۸/۰۷',
-                    likes: 15,
-                    coverUrl: defaultCovers.video,
-                    mediaUrl: '',
-                    body: 'در این بررسی ویدیویی عملکرد واقعی پردازشگرهای عصبی را در اجرای مدل‌های هوش مصنوعی به صورت آفلاین آزمایش کردیم.',
-                    comments: []
-                }
-            ],
-            logs: ['سیستم امنیتی نسخه رسمی Noise Tech راه‌اندازی شد.']
+            posts: [],
+            logs: ['دیتابیس ابری اختصاصی Noise Tech راه‌اندازی شد.']
         };
 
-        let state = JSON.parse(localStorage.getItem('noisetech_v2_db')) || defaultData;
+        let state = initialEmptyState;
         let currentFilter = 'all';
         let loggedInUser = null;
         let activeViewPostId = null;
 
-        function saveState() {
-            localStorage.setItem('noisetech_v2_db', JSON.stringify(state));
+        // دریافت زنده اطلاعات از فضای ابری گوگل
+        onSnapshot(stateDocRef, (snapshot) => {
+            const dot = document.getElementById('cloudDot');
+            const txt = document.getElementById('cloudStatusText');
+            dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+            txt.textContent = "متصل به دیتابیس ابری زنده (Firebase Cloud)";
+            txt.className = "text-emerald-400 font-bold";
+
+            if (snapshot.exists()) {
+                state = snapshot.data();
+                state.posts = state.posts || [];
+                state.users = state.users || initialEmptyState.users;
+                state.logs = state.logs || [];
+                if (loggedInUser) {
+                    const updatedMe = state.users.find(u => u.id === loggedInUser.id);
+                    if (!updatedMe || !updatedMe.active) {
+                        window.logoutAdmin();
+                    } else {
+                        loggedInUser = updatedMe;
+                    }
+                }
+                renderAll();
+            } else {
+                setDoc(stateDocRef, initialEmptyState);
+            }
+        }, (err) => {
+            console.error(err);
+            const dot = document.getElementById('cloudDot');
+            const txt = document.getElementById('cloudStatusText');
+            dot.className = "w-2 h-2 rounded-full bg-rose-500";
+            txt.textContent = "خطا در اتصال به ابر (بررسی اینترنت یا قوانین Firestore)";
+        });
+
+        async function saveState() {
             renderAll();
+            try {
+                await setDoc(stateDocRef, state);
+            } catch (e) {
+                console.error("Cloud Save Error:", e);
+                alert("خطا در ذخیره ابری! مطمئن شوید Firestore در حالت Test Mode است.");
+            }
         }
 
         function logAction(msg) {
             const time = new Date().toLocaleTimeString('fa-IR');
             state.logs.unshift(`[${time}] ${msg}`);
+            if (state.logs.length > 100) state.logs.pop();
             saveState();
         }
 
-        function setFilter(cat) {
+        window.setFilter = function(cat) {
             currentFilter = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if (btn.dataset.cat === cat) {
@@ -390,8 +404,8 @@
                     btn.className = 'cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-sm transition';
                 }
             });
-            renderContent();
-        }
+            window.renderContent();
+        };
 
         function typeBadge(type) {
             const map = { podcast: '🎧 پادکست', article: '📝 مقاله', magazine: '📖 مجله', video: '🎬 ویدیو' };
@@ -415,66 +429,77 @@
             }
         }
 
-        function renderContent() {
+        window.renderContent = function() {
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             const grid = document.getElementById('contentGrid');
-            const filtered = state.posts.filter(p => {
+            const posts = state.posts || [];
+            const filtered = posts.filter(p => {
                 const matchCat = currentFilter === 'all' || p.type === currentFilter;
                 const matchQ = p.title.toLowerCase().includes(q) || p.body.toLowerCase().includes(q);
                 return matchCat && matchQ;
             });
 
-            grid.innerHTML = filtered.map(p => {
-                const cover = p.coverUrl || defaultCovers[p.type] || defaultCovers.article;
-                return `
-                <article class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl overflow-hidden flex flex-col justify-between transition group shadow-lg">
-                    <div>
-                        <div class="relative h-48 overflow-hidden bg-slate-950">
-                            <img src="${cover}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 right-3 text-xs font-bold px-3 py-1 rounded-full glass text-cyan-300 border border-slate-700">${typeBadge(p.type)}</span>
-                        </div>
-                        <div class="p-5">
-                            <div class="text-[11px] text-slate-500 mb-2">${p.date} • نویسنده: ${p.author}</div>
-                            <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition mb-2 leading-snug">${p.title}</h3>
-                            <p class="text-slate-400 text-sm line-clamp-3 leading-relaxed">${p.body}</p>
-                        </div>
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-slate-900/60 border border-slate-800 rounded-3xl p-12 text-center">
+                        <div class="text-4xl mb-3">🚀</div>
+                        <h3 class="text-lg font-bold text-white mb-1">هنوز مطلبی در این بخش منتشر نشده است</h3>
+                        <p class="text-xs text-slate-400">از طریق دکمه «🔐 ورود همکاران» در بالای صفحه وارد پنل مدیریت شوید و اولین محتوای Noise Tech را منتشر کنید.</p>
                     </div>
-                    <div class="px-5 pb-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
-                        <button onclick="likePost('${p.id}')" class="text-xs text-rose-400 hover:bg-rose-500/10 px-2.5 py-1 rounded-lg transition">
-                            ❤️ ${p.likes || 0}
-                        </button>
-                        <div class="flex gap-2">
-                            ${p.type === 'podcast' 
-                                ? `<button onclick="playPodcast('${p.id}')" class="bg-cyan-500/15 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold px-3 py-1.5 rounded-lg transition">▶ پخش صوت</button>`
-                                : ''
-                            }
-                            <button onclick="openViewModal('${p.id}')" class="bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">مشاهده کامل</button>
+                `;
+            } else {
+                grid.innerHTML = filtered.map(p => {
+                    const cover = p.coverUrl || defaultCovers[p.type] || defaultCovers.article;
+                    return `
+                    <article class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl overflow-hidden flex flex-col justify-between transition group shadow-lg">
+                        <div>
+                            <div class="relative h-48 overflow-hidden bg-slate-950">
+                                <img src="${cover}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <span class="absolute top-3 right-3 text-xs font-bold px-3 py-1 rounded-full glass text-cyan-300 border border-slate-700">${typeBadge(p.type)}</span>
+                            </div>
+                            <div class="p-5">
+                                <div class="text-[11px] text-slate-500 mb-2">${p.date} • نویسنده: ${p.author}</div>
+                                <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition mb-2 leading-snug">${p.title}</h3>
+                                <p class="text-slate-400 text-sm line-clamp-3 leading-relaxed">${p.body}</p>
+                            </div>
                         </div>
-                    </div>
-                </article>
-            `}).join('');
+                        <div class="px-5 pb-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                            <button onclick="likePost('${p.id}')" class="text-xs text-rose-400 hover:bg-rose-500/10 px-2.5 py-1 rounded-lg transition">
+                                ❤️ ${p.likes || 0}
+                            </button>
+                            <div class="flex gap-2">
+                                ${p.type === 'podcast' 
+                                    ? `<button onclick="playPodcast('${p.id}')" class="bg-cyan-500/15 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold px-3 py-1.5 rounded-lg transition">▶ پخش صوت</button>`
+                                    : ''
+                                }
+                                <button onclick="openViewModal('${p.id}')" class="bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-lg transition">مشاهده کامل</button>
+                            </div>
+                        </div>
+                    </article>
+                `}).join('');
+            }
 
-            document.getElementById('statTotal').textContent = state.posts.length;
-            document.getElementById('statLikes').textContent = state.posts.reduce((sum, p) => sum + (p.likes || 0), 0);
-        }
+            document.getElementById('statTotal').textContent = posts.length;
+            document.getElementById('statLikes').textContent = posts.reduce((sum, p) => sum + (p.likes || 0), 0);
+        };
 
-        function likePost(id) {
+        window.likePost = function(id) {
             const p = state.posts.find(x => x.id === id);
             if (!p) return;
             p.likes = (p.likes || 0) + 1;
             saveState();
-        }
+        };
 
-        function playPodcast(id) {
+        window.playPodcast = function(id) {
             const p = state.posts.find(x => x.id === id);
             if (!p) return;
             document.getElementById('playerTitle').textContent = p.title;
             const audio = document.getElementById('audioElement');
             if (p.mediaUrl) audio.src = p.mediaUrl;
             audio.play();
-        }
+        };
 
-        function openViewModal(id) {
+        window.openViewModal = function(id) {
             const p = state.posts.find(x => x.id === id);
             if (!p) return;
             activeViewPostId = id;
@@ -496,7 +521,7 @@
             renderComments(p);
             document.getElementById('viewModal').classList.remove('hidden');
             document.getElementById('viewModal').classList.add('flex');
-        }
+        };
 
         function renderComments(post) {
             const list = post.comments || [];
@@ -513,7 +538,7 @@
             `).join('');
         }
 
-        function addComment(e) {
+        window.addComment = function(e) {
             e.preventDefault();
             const p = state.posts.find(x => x.id === activeViewPostId);
             if (!p) return;
@@ -525,25 +550,25 @@
             e.target.reset();
             saveState();
             renderComments(p);
-        }
+        };
 
-        function closeViewModal() {
+        window.closeViewModal = function() {
             document.getElementById('viewModal').classList.add('hidden');
             document.getElementById('viewModal').classList.remove('flex');
-        }
+        };
 
-        function openLoginModal() {
+        window.openLoginModal = function() {
             document.getElementById('loginError').classList.add('hidden');
             document.getElementById('loginModal').classList.remove('hidden');
             document.getElementById('loginModal').classList.add('flex');
-        }
+        };
 
-        function closeLoginModal() {
+        window.closeLoginModal = function() {
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('loginModal').classList.remove('flex');
-        }
+        };
 
-        function handleLogin(e) {
+        window.handleLogin = function(e) {
             e.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
@@ -566,40 +591,40 @@
             loggedInUser = found;
             logAction(`✅ ورود موفق به پنل مدیریت توسط: ${found.name}`);
             e.target.reset();
-            closeLoginModal();
+            window.closeLoginModal();
             renderHeaderAuth();
-            openAdminModal();
-        }
+            window.openAdminModal();
+        };
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
             if (loggedInUser) logAction(`👋 خروج از پنل مدیریت: ${loggedInUser.name}`);
             loggedInUser = null;
-            closeAdminModal();
+            window.closeAdminModal();
             renderHeaderAuth();
-        }
+        };
 
-        function openAdminModal() {
+        window.openAdminModal = function() {
             if (!loggedInUser) {
-                openLoginModal();
+                window.openLoginModal();
                 return;
             }
             renderAdmin();
             document.getElementById('adminModal').classList.remove('hidden');
             document.getElementById('adminModal').classList.add('flex');
-        }
+        };
 
-        function closeAdminModal() {
+        window.closeAdminModal = function() {
             document.getElementById('adminModal').classList.add('hidden');
             document.getElementById('adminModal').classList.remove('flex');
-        }
+        };
 
-        function switchAdminTab(tab) {
+        window.switchAdminTab = function(tab) {
             ['content', 'team', 'logs', 'backup'].forEach(t => {
                 document.getElementById(`adminTab-${t}`).classList.toggle('hidden', t !== tab);
             });
-        }
+        };
 
-        function saveContent(e) {
+        window.saveContent = function(e) {
             e.preventDefault();
             if (!loggedInUser || !loggedInUser.active) return;
 
@@ -639,9 +664,9 @@
             document.getElementById('editId').value = '';
             e.target.reset();
             saveState();
-        }
+        };
 
-        function editPost(id) {
+        window.editPost = function(id) {
             const p = state.posts.find(x => x.id === id);
             if (!p) return;
             document.getElementById('editId').value = p.id;
@@ -650,9 +675,9 @@
             document.getElementById('formCoverUrl').value = p.coverUrl || '';
             document.getElementById('formMediaUrl').value = p.mediaUrl || '';
             document.getElementById('formBody').value = p.body;
-        }
+        };
 
-        function deletePost(id) {
+        window.deletePost = function(id) {
             if (!loggedInUser || loggedInUser.role === 'author') {
                 alert('خطای امنیتی: فقط مدیر کل و سردبیر اجازه حذف مطالب را دارند!');
                 return;
@@ -660,9 +685,9 @@
             state.posts = state.posts.filter(p => p.id !== id);
             logAction(`🗑️ حذف یک مطلب توسط ${loggedInUser.name}`);
             saveState();
-        }
+        };
 
-        function changeMyPassword(e) {
+        window.changeMyPassword = function(e) {
             e.preventDefault();
             if (!loggedInUser) return;
             const newPass = document.getElementById('newAdminPass').value.trim();
@@ -670,13 +695,13 @@
             if (target) {
                 target.password = newPass;
                 logAction(`🔑 رمز عبور حساب «${target.name}» با موفقیت تغییر یافت.`);
-                alert('رمز عبور شما با موفقیت تغییر کرد!');
+                alert('رمز عبور شما در دیتابیس ابری ذخیره شد!');
                 e.target.reset();
                 saveState();
             }
-        }
+        };
 
-        function addTeamMember(e) {
+        window.addTeamMember = function(e) {
             e.preventDefault();
             if (!loggedInUser || loggedInUser.role !== 'superadmin') {
                 alert('فقط مدیر کل اجازه افزودن یا تغییر اعضای تیم را دارد!');
@@ -691,9 +716,9 @@
             logAction(`👤 عضو جدید «${name}» (${username}) توسط مدیر کل اضافه شد.`);
             e.target.reset();
             saveState();
-        }
+        };
 
-        function toggleUserAccess(id) {
+        window.toggleUserAccess = function(id) {
             if (!loggedInUser || loggedInUser.role !== 'superadmin') {
                 alert('فقط مدیر کل اجازه قطع یا وصل دسترسی اعضا را دارد!');
                 return;
@@ -703,17 +728,17 @@
             target.active = !target.active;
             logAction(`🔒 وضعیت دسترسی «${target.name}» به «${target.active ? 'فعال' : 'مسدود'}» تغییر یافت.`);
             saveState();
-        }
+        };
 
-        function exportBackup() {
+        window.exportBackup = function() {
             const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'noisetech-backup.json';
             a.click();
-        }
+        };
 
-        function importBackup(e) {
+        window.importBackup = function(e) {
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -723,32 +748,36 @@
                     if (data.posts && data.users) {
                         state = data;
                         saveState();
-                        alert('فایل پشتیبان با موفقیت بازیابی شد!');
+                        alert('فایل پشتیبان با موفقیت در دیتابیس ابری بازیابی شد!');
                     }
                 } catch (err) {
                     alert('فایل انتخاب شده معتبر نیست.');
                 }
             };
             reader.readAsText(file);
-        }
+        };
 
         function renderAdmin() {
             if (!loggedInUser) return;
             document.getElementById('currentRoleBanner').textContent = 
                 `حساب فعال: ${loggedInUser.name} (${loggedInUser.username}) | سطح دسترسی: ${loggedInUser.role}`;
 
-            document.getElementById('adminContentList').innerHTML = state.posts.map(p => `
-                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
-                    <div>
-                        <span class="text-xs text-cyan-400 font-bold ml-2">${typeBadge(p.type)}</span>
-                        <span class="text-sm text-white font-medium">${p.title}</span>
+            if (state.posts.length === 0) {
+                document.getElementById('adminContentList').innerHTML = `<div class="text-xs text-slate-500 text-center py-4">هنوز مطلبی ثبت نشده است. از فرم بالا اولین مطلب را منتشر کنید!</div>`;
+            } else {
+                document.getElementById('adminContentList').innerHTML = state.posts.map(p => `
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex justify-between items-center">
+                        <div>
+                            <span class="text-xs text-cyan-400 font-bold ml-2">${typeBadge(p.type)}</span>
+                            <span class="text-sm text-white font-medium">${p.title}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editPost('${p.id}')" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded text-xs">ویرایش</button>
+                            <button onclick="deletePost('${p.id}')" class="bg-rose-500/20 text-rose-300 px-3 py-1 rounded text-xs">حذف</button>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="editPost('${p.id}')" class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded text-xs">ویرایش</button>
-                        <button onclick="deletePost('${p.id}')" class="bg-rose-500/20 text-rose-300 px-3 py-1 rounded text-xs">حذف</button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
             document.getElementById('teamList').innerHTML = state.users.map(u => `
                 <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-wrap justify-between items-center gap-2">
@@ -768,12 +797,12 @@
                 </div>
             `).join('');
 
-            document.getElementById('securityLogs').innerHTML = state.logs.map(l => `<div>${l}</div>`).join('');
+            document.getElementById('securityLogs').innerHTML = (state.logs || []).map(l => `<div>${l}</div>`).join('');
         }
 
         function renderAll() {
             renderHeaderAuth();
-            renderContent();
+            window.renderContent();
             if (loggedInUser) renderAdmin();
         }
 

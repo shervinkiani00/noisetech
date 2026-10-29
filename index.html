@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,7 @@ v<!DOCTYPE html>
         <!-- هدر اصلی -->
         <header class="sticky top-0 z-40 glass border-b border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
-                <a href="#" class="flex items-center gap-3">
+                <a href="#" id="secretLogoTrigger" class="flex items-center gap-3 select-none cursor-pointer">
                     <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg shadow-cyan-500/25">
                         NT
                     </div>
@@ -57,7 +57,7 @@ v<!DOCTYPE html>
                         class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
                 </div>
 
-                <!-- دکمه ورود مدیریت / وضعیت مدیر -->
+                <!-- ناحیه دکمه مدیریت (مخفی برای کاربران عادی، فقط پس از ورود نمایش داده می‌شود) -->
                 <div class="flex items-center gap-2" id="headerAuthArea"></div>
             </div>
         </header>
@@ -152,14 +152,14 @@ v<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- مودال ورود امنیتی (Login Modal) -->
+    <!-- مودال ورود امنیتی مخفی (Login Modal) -->
     <div id="loginModal" class="fixed inset-0 bg-black/85 z-50 hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-black text-white">🔐 ورود به پنل مدیریت Noise Tech</h3>
                 <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white">✕</button>
             </div>
-            <p class="text-xs text-slate-400 mb-4">فقط مدیر کل و نویسندگان مجاز با نام کاربری و رمز عبور اختصاصی امکان ورود دارند.</p>
+            <p class="text-xs text-slate-400 mb-4">درگاه اختصاصی مدیران و تحریریه نویز تک.</p>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1">نام کاربری (Username)</label>
@@ -412,6 +412,7 @@ v<!DOCTYPE html>
             return map[type] || type;
         }
 
+        // مخفی بودن کامل دکمه ورود برای بازدیدکنندگان عادی
         function renderHeaderAuth() {
             const container = document.getElementById('headerAuthArea');
             if (loggedInUser) {
@@ -421,11 +422,7 @@ v<!DOCTYPE html>
                     </button>
                 `;
             } else {
-                container.innerHTML = `
-                    <button onclick="openLoginModal()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold px-4 py-2 rounded-xl text-xs md:text-sm transition">
-                        🔐 ورود همکاران
-                    </button>
-                `;
+                container.innerHTML = '';
             }
         }
 
@@ -444,7 +441,7 @@ v<!DOCTYPE html>
                     <div class="col-span-full bg-slate-900/60 border border-slate-800 rounded-3xl p-12 text-center">
                         <div class="text-4xl mb-3">🚀</div>
                         <h3 class="text-lg font-bold text-white mb-1">هنوز مطلبی در این بخش منتشر نشده است</h3>
-                        <p class="text-xs text-slate-400">از طریق دکمه «🔐 ورود همکاران» در بالای صفحه وارد پنل مدیریت شوید و اولین محتوای Noise Tech را منتشر کنید.</p>
+                        <p class="text-xs text-slate-400">به زودی جدیدترین پادکست‌ها، مقالات و ویدیوهای تکنولوژی در Noise Tech منتشر می‌شوند.</p>
                     </div>
                 `;
             } else {
@@ -566,6 +563,9 @@ v<!DOCTYPE html>
         window.closeLoginModal = function() {
             document.getElementById('loginModal').classList.add('hidden');
             document.getElementById('loginModal').classList.remove('flex');
+            if (window.location.hash === '#admin') {
+                history.replaceState(null, null, ' ');
+            }
         };
 
         window.handleLogin = function(e) {
@@ -805,6 +805,36 @@ v<!DOCTYPE html>
             window.renderContent();
             if (loggedInUser) renderAdmin();
         }
+
+        // راه‌های مخفی باز کردن پنجره ورود مدیران:
+        // ۱. اضافه کردن #admin به آخر آدرس سایت
+        if (window.location.hash === '#admin') {
+            window.openLoginModal();
+        }
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#admin') window.openLoginModal();
+        });
+
+        // ۲. کلید میانبر Ctrl + Shift + L روی کیبورد
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+                e.preventDefault();
+                window.openLoginModal();
+            }
+        });
+
+        // ۳. پنج بار کلیک یا لمس پشت سر هم روی لوگوی NT در بالای سایت
+        let logoClicks = 0, logoTimer;
+        document.getElementById('secretLogoTrigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            logoClicks++;
+            clearTimeout(logoTimer);
+            if (logoClicks >= 5) {
+                logoClicks = 0;
+                window.openLoginModal();
+            }
+            logoTimer = setTimeout(() => { logoClicks = 0; }, 1500);
+        });
 
         renderAll();
     </script>
